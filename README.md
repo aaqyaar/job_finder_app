@@ -1,16 +1,43 @@
-# job_finder
+# Job Finder App
 
-A new Flutter project.
+Job Finder App is a mobile application that helps people to find jobs. It is built with Flutter and Nodejs(Express).
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- [x] Flutter SDK
+- [x] Android Studio (must for Android)
+- [x] Xcode (must for iOS)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repo
+
+```sh
+git clone https://github.com/aaqyaar/job_finder_app.git
+```
+
+2. Install Dependencies
+
+```sh
+flutter pub get
+```
+
+3. Generate Folders
+
+- Generate folders for Android and iOS
+
+```sh
+flutter create .
+```
+
+4. Run the app
+
+```sh
+flutter run
+```
+
+## Contributing
+
+Contributions are always welcome!
