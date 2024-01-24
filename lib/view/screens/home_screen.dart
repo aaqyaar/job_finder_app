@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:job_finder/models/user.dart';
 import 'package:job_finder/services/api.dart';
 import 'package:job_finder/utils/colors.dart';
@@ -149,13 +146,29 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar:
-          BottomNavigationBar(selectedItemColor: AppColor.primary, items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.cases_outlined), label: "Jobs"),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (index) {
+            if (index == 0) {
+              Navigator.pushNamed(context, "/"); // Navigate to HomeScreen
+            } else if (index == 1) {
+            } else if (index == 2) {
+              Navigator.pushNamed(
+                  context, "/settings"); // Navigate to SettingsScreen
+            }
+          },
+          selectedItemColor: AppColor.primary,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined), label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.cases_outlined), label: "Jobs"),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+              ),
+              label: "Settings",
+            )
+          ]),
     );
   }
 }
