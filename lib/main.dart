@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:job_finder/view/screens/auth/login_screen.dart';
 import 'package:job_finder/view/screens/home_screen.dart';
+import 'package:job_finder/view/screens/settings_screen.dart';
 
 void main() {
   runApp(const AppNavigator());
@@ -12,9 +14,11 @@ class AppNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
+      initialRoute: "/auth/login",
       routes: {
-        "/" : (context) => const HomeScreen()
+        "/auth/login": (context) => const LoginScreen(),
+        "/": (context) => const HomeScreen(),
+        "/settings": (context) => const SettingsScreen()
       },
     );
   }
