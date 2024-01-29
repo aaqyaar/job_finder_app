@@ -6,4 +6,5 @@ class AppColor {
   static const dark = Color(0xFF121414);
   static const white = Colors.white;
   static const tertiary = Color(0xFFF1F1F1);
+  static const grey = Color(0xFFF4F4F4);
 }

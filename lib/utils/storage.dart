@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
@@ -5,15 +7,22 @@ class Storage {
     return await SharedPreferences.getInstance();
   }
 
-  // setValue, generic method to set any type of value
+  // Serialize and store a Map<String, dynamic> as a JSON-encoded string
   static setValue(String key, dynamic value) async {
     SharedPreferences prefs = await getPrefs();
+
     if (value is String) {
       prefs.setString(key, value);
     } else if (value is int) {
       prefs.setInt(key, value);
+    } else if (value is double) {
+      prefs.setDouble(key, value);
     } else if (value is bool) {
       prefs.setBool(key, value);
+    } else if (value is List<String>) {
+      prefs.setStringList(key, value);
+    } else if (value is Map<String, dynamic>) {
+      prefs.setString(key, jsonEncode(value));
     }
   }
 
