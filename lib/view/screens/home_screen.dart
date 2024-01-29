@@ -1,156 +1,114 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:job_finder/models/user.dart';
 import 'package:job_finder/services/api.dart';
 import 'package:job_finder/utils/colors.dart';
+import 'package:job_finder/utils/storage.dart';
+
+import '../../widgets/job_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Result> users = [];
-
   @override
   void initState() {
     super.initState();
-
-    fetchUsers();
-  }
-
-  Future<void> fetchUsers() async {
-    final response = await ApiService.fetchUsers();
-    setState(() {
-      users = response;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        backgroundColor: AppColor.grey,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage:
-                        NetworkImage("https://www.github.com/aaqyaar.png"),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(color: AppColor.primary, width: 1),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: const CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(
+                                "https://www.github.com/aaqyaar.png"),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Hi, Abdi Zamed Mohamed",
+                        style: GoogleFonts.inter(fontSize: 17),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
+                  const SizedBox(
+                    height: 20,
+                    width: 4,
                   ),
                   Text(
-                    "Hi, Abdi Zamed Mohamed",
-                    style: GoogleFonts.inter(fontSize: 17),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-                width: 4,
-              ),
-              Text(
-                "Let's Find Your Dream Job!",
-                style: GoogleFonts.inter(
-                    fontSize: 22, fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                width: double.infinity,
-                height: 60,
-                decoration: BoxDecoration(
-                    color: AppColor.tertiary,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search jobs by company, location"),
+                    "Let's Find Your Dream Job!",
+                    style: GoogleFonts.inter(
+                        fontSize: 22, fontWeight: FontWeight.w700),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                height: 40,
-                child: Expanded(
-                  child: ListView.builder(
-                    itemCount: 10,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: index == 0
-                                    ? AppColor.primary
-                                    : AppColor.secondary,
-                                borderRadius: BorderRadius.circular(6)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                  const SizedBox(
+                    height: 16,
+                  ),
+
+                  // Job list
+                  FutureBuilder(
+                      future: ApiService.getJobs(),
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final job = snapshot.data![index];
+                            return Column(
                               children: [
-                                Text(
-                                  "All",
-                                  style: GoogleFonts.inter(
-                                      color: index == 0
-                                          ? AppColor.white
-                                          : AppColor.dark),
+                                JobCard(
+                                  job: job,
+                                  image: "https://www.github.com/aaqyaar.png",
+                                  companyName: job.company.toString(),
+                                  jobTitle: job.title.toString(),
+                                  salary: job.salary.toString(),
+                                ),
+                                const SizedBox(
+                                  height: 16,
                                 ),
                               ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                            );
+                          },
+                        );
+                      }),
+                ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.amber,
-                        ),
-                        Text("product Designer")
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
             if (index == 0) {
               Navigator.pushNamed(context, "/"); // Navigate to HomeScreen
             } else if (index == 1) {
+              Navigator.pushNamed(context, "/dashboard/jobs");
             } else if (index == 2) {
               Navigator.pushNamed(
                   context, "/settings"); // Navigate to SettingsScreen
@@ -160,6 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined), label: "Home"),
+            // user['role'] != ADMIN don't show this
+
             BottomNavigationBarItem(
                 icon: Icon(Icons.cases_outlined), label: "Jobs"),
             BottomNavigationBarItem(
@@ -168,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               label: "Settings",
             )
-          ]),
-    );
+          ],
+        ));
   }
 }
