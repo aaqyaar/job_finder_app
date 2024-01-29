@@ -11,8 +11,11 @@ import 'package:job_finder/view/screens/home_screen.dart';
 import 'package:job_finder/view/screens/dashboard/new_edit_job_screen.dart';
 import 'package:job_finder/view/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+
   runApp(const AppNavigator());
 }
 
