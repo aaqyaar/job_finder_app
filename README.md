@@ -18,13 +18,19 @@ Job Finder App is a mobile application that helps people to find jobs. It is bui
 git clone https://github.com/aaqyaar/job_finder_app.git
 ```
 
-2. Install Dependencies
+2. Set environment variables in `env` file.
+
+```sh
+API_URL = '' # Backend api url
+```
+
+3. Install Dependencies
 
 ```sh
 flutter pub get
 ```
 
-3. Generate Folders
+4. Generate Folders
 
 - Generate folders for Android and iOS
 
@@ -32,7 +38,7 @@ flutter pub get
 flutter create .
 ```
 
-4. Run the app
+5. Run the app
 
 ```sh
 flutter run
